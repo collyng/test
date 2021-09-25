@@ -1,0 +1,376 @@
+---
+title: "Week 2 Lab Session Answers"
+author: "Team 1- Collyn"
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output: html_document
+---
+
+
+# Introduction
+
+The purpose for this week is to get comfortable with working in R, RStudio, and RMarkdown.
+
+The statistical computing project [R](https://www.r-project.org/) is a programming language that we will use in this course. [RStudio](https://www.rstudio.com/) is a graphical user interface for R that we will use in this course. Finally, [R Markdown](http://rmarkdown.rstudio.com/) is a language and interface for writing reports. Visit the respective website for more information.
+
+If you are looking at this file in RStudio, chances are that you have already installed all the required software. If not: ask me and I will point you in the right direction.
+
+Whenever you see a box like the following, it contains R code that you can execute.
+
+```{r}
+
+print("Hello world!")
+
+```
+
+To run the code in the box, move the cursor to the line you want to run and press Ctrl+Enter. 
+
+R will run all the code in a block if you move the cursor into the block and press Ctrl+Shft+Enter. Try it in the next block.
+
+```{r}
+a <- 5
+print(a)
+```
+
+The nice thing about R Markdown is that it combines regular text, mathematics (see: $\hat{\beta} = (X'X)^{-1}X'y$), code, and the output from code. Press Ctrl+Shft+K to see how the document you are currently looking at is transformed into an .html document. Can you find the .html document in your working directory?
+
+# Instructions
+
+Using the R Markdown functionality, this document is a combination of lecture notes and hand-in assignment. To successfully complete the hand-in assignments:
+
+1. Update the information in the YAML header
+2. Follow along with the instructions that I provide. 
+3. Answer any questions that I ask in the "## Answer 3" blocks by providing some code, and writing at least one sentence before you write any code, and writing at least one sentence after the output from the code.
+4. Knit the document (Ctrl+Shft+K).
+5. Upload this .Rmd file (with your answers) and .html file
+
+Treat this as a written assignment:
+
+1. Imagine you were the grader: would you be happy to receive this assignment?
+2. Run a spell check (F7) and have another look at your grammar before you hand it in.
+
+# R as a calculator
+
+Down the line, we will do some exciting things with R. We will see some visualization; write our own functions; and perform sophisticated econometric analyses. However, we will start by using R as a calculator. Use this week's instructions as a way to get comfortable with R, RStudio, and R Markdown.
+
+Let's get started!
+
+```{r}
+1+1
+sqrt(9)
+sqrt(65)*sqrt(65)
+16/8
+2^5
+```
+
+Did you get the desired result? Remember: to run the code in the block above, hit Ctrl+Shft+Enter (or press the green "Play" button on the top right). The code block above shows you that regular arithmetic works: addition, multiplication, etc.
+
+What is `sqrt`? `sqrt` is function that is built-in into R. **Anything you do in R is a function.** To obtain information on a function, use `?`. For example:
+
+```{r}
+?sqrt
+```
+
+Those results do not show up in the R Markdown, but they are visible in RStudio. Make sure you find it.
+
+**Anything you use in R is an object.** To name an object, use `<-` for assignment.
+
+```{r}
+a <- 5
+a*a
+```
+
+The first line assigns the **value** 5 to an **object** named `a`. The second line uses that object to do some further computation.
+
+Also notice that the first line did not produce any output. By default, operations in which you assign (i.e. use `<-`) do not produce output. To overrule this, put the assignment operation inside of parentheses:
+
+```{r}
+(b <- 39)
+a*b
+```
+
+To have a look at the objects currently available, use `ls()`.
+
+```{r}
+ls()
+```
+
+If you want to remove one of the objects you made, use `rm`.
+
+```{r}
+rm("a")
+ls()
+```
+
+To check whether an object of a certain name exists, use `exists`.
+
+```{r}
+exists("a")
+exists("chicken")
+exists("b")
+```
+
+To remove all objects, use the following code. Learn this one by heart: it is useful in many situations.
+
+```{r}
+rm(list=ls())
+```
+
+# R as a calculator
+
+## Question 1
+
+1. Compute the factorial of 7, and store it as `f7`. Compute the natural logarithm of `10`, store it as `lten`. Compute the product of those two new objects, and print it to the screen.
+
+2. Next, store the name of the team colour in an object called `team_colour`. Use `paste` to print "The colour of our team is red" to the screen. There, "red" should be replaced by the colour of your team. Hint: use `?paste` to find out more about the `paste` function.
+
+3. What does `round(100/3,4)` do? How can you change that command to return "33"?
+
+## Answer 1
+
+```{r}
+### Part 1
+f7 <- factorial(7)
+
+lten <- log(10)
+
+prod1 <- (f7)*(lten)
+print(prod1)
+
+```
+
+
+```{r}
+team_colour <- "black"
+paste("The colour of our team is",team_colour,".")
+
+```
+
+```{r}
+r1 <- round(100/3,4)
+print(r1)
+
+r2 <- round(100/3, 0)
+print(r2)
+```
+
+<!-- End of question 1 -->
+
+# Vectors
+
+A basic way to keep a bunch of objects of a similar type together is by using a vector, using `c()` (for "combine"). Note: we can add some comments to the code by using the `#`.
+
+```{r}
+# First, create a vector of doubles.
+dbl_var <- c(1, 2.5, 4.5) 
+# With the L suffix, you get an integer rather than a double
+int_var <- c(1L, 6L, 10L)
+# Use TRUE and FALSE (or T and F) to create logical vectors
+log_var <- c(TRUE, FALSE, T, F)
+# Finally, create a vector of character strings
+chr_var <- c("these are", "some strings")
+```
+
+Two important pieces of information about a vector are its length and type.
+
+```{r}
+length(dbl_var)
+typeof(dbl_var)
+typeof(int_var)
+length(chr_var)
+typeof(chr_var)
+```
+
+For vectors with doubles and integers ("numbers"), we can easily compute the minimum (`min`), maximum (`max`), sum (`sum`), and product (`prod`).
+
+```{r}
+test_vec <- c(7,2,5,9,3)
+min(test_vec)
+max(test_vec)
+sum(test_vec)
+prod(test_vec)
+```
+
+R is built with vectors in mind. Many functions that work with scalars also work with vectors.
+
+```{r}
+a <- c(4,9,16,25)
+sqrt(a)
+```
+
+As another example, you can do scalar addition and multiplication as follows.
+
+```{r}
+2+1*a
+1+2*a
+```
+
+If you add or multiple two vectors, the result comes from the addition/multiplication of the individual elements.
+
+```{r}
+a <- c(1,2,3,4)
+b <- c(5,100,1,0)
+a+b
+a*b
+```
+
+Here are some other ways to create vectors. Make sure you understand what the following commands do. Use e.g. `?rep` if you are unsure.
+
+```{r}
+# Vector of zeros
+numeric(8)
+numeric(8) + 3
+# Repetition
+rep(c(1,2),7)
+rep(c(5,10),each=4)
+# Sequences
+25:39
+seq(7)
+seq(7,31,3)
+```
+
+# R for data visualization 
+
+Using a data set, you may want to visualize important variables to carry out some eye-balling analysis. R has a variety of in-built data sets. We will play with some simple data and draw plots with basic R plot functions. 
+
+First, you have to load a data set to your work environment. We will use "faithful" data. This data set contains two variables, waiting time between eruptions and the duration of the eruption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA. 272 observations on the two variables are included. Below I write a code that loads "faithful" data set. Then I draw a scatter plot of the two variables using R's in-built plot function. 
+
+```{r}
+# load an in-built data set
+data("faithful")
+faithful
+# scatter plot the data 
+plot(faithful)
+```
+It gives a good graphical presentation. But for a more advanced data set containing many variables, we want more. "tidyverse" package includes "ggplot2" which provides amazing visualization features. Let's look at another data set. 
+
+```{r}
+# load an in-built data set
+rm(list=ls())
+data("mtcars")
+mtcars
+
+# scatter plot the data 
+library(tidyverse)
+ggplot(data=mtcars, aes(x=disp, y=mpg)) + geom_point()
+```
+
+
+## Question 2
+
+In Appendix A of Wooldridge, we look at function approximations. In particular, equation (A.31) on page 717 says that, if $y = f(x)$ for some function $f$, then for small changes in $x$,
+$$ \Delta y \approx \frac{df}{dx} \Delta x,$$
+where $df/dx$ is the derivative at $x$.
+
+We can use R to investigate how well the approximation works for $y=\log(x)$. Then, for the natural logarithm, we have the approximation 
+$$\Delta \log(x) \approx \frac{\Delta x}{x}.$$ 
+
+Present the quality of the approximation for different values of $x$ and $\Delta x$. Generate a table, or present it in a plot.
+
+## Answer 2
+vx <- c(1,2,3,10,100)
+vdx <- c(0.01, 0.1, 1, 10, 100)
+dlogx <- log(vx+vdx) + log(vx)
+print(dlogx)
+tdlogx <- t(dlogx)
+matrix1 <- 
+```{r}
+
+```
+
+
+# Monty Hall and `if`/`for`
+
+You will be writing a program that simulates the Monty Hall problem. While doing so, you will be using external sources to teach yourself about `if` statements and `for` loops.
+
+The Monty Hall problem follows: 
+
+> You are in the final stage of a game show. Three doors are in front of you. Behind one of the doors is the car, and behind the other two are bicycles. You want the car. You can open one door, and will receive what is behind that door. Initially, you choose a door (say the one on the left). The game host, who knows where the car is, now opens another door which has a bicycle (say the one in the middle). He then asks you: "Would you prefer to switch to the door on the right?". 
+
+Would you?
+
+We can represent the problem inside of R as follows. First, we can label the doors by "1", "2", and "3". The following vector then represents the doors.
+
+```{r}
+doors <- seq(1,3,1)
+doors
+```
+
+We can use `sample` to randomly select a door. For example,
+
+```{r}
+sample(doors,size = 1)
+sample(doors,size = 1)
+sample(doors,size = 1)
+sample(doors,size = 1)
+```
+
+Let us randomly select a door to represent the one with the car behind it.
+
+```{r}
+car <- sample(doors,size=1)
+```
+
+And the same for a door chosen at random by the contestant.
+
+```{r}
+chosen <- sample(doors,size=1)
+```
+
+## Question 3
+
+First, check whether the door chosen by the contestant has a car behind it.
+
+Second, create `openable_doors`, containing the doors that the game hosts can open, i.e. all the original doors, minus the door chosen by the contestant, minus the door with the car.
+
+Third, select the door opened by the gameshow host `door_opened`. **If** there is only one openable door, that is the door that will be opened. If there is more than one, the game show host opens one at random. For this question, you are using `if`, and you are also using `sample` in the second part.
+
+Fourth, create an object `switched_door` that contains the door the contestant switches to (if she decides to switch).
+
+Fifth, check whether the switched-to door has a car behind it.
+
+Sixth, use a `for` loop to repeat the steps so far 10000 times. Across those repetitions, was it profitable to switch?
+
+
+
+## Answer 3
+
+```{r}
+chosen
+car
+if((chosen=1)&(car = 1)) {
+  door_opened <- sample(2:3,size=1)
+} else if((chosen=1)&(car=2)) {
+  door_opened <- 3
+}
+
+print(door_opened)
+
+
+s <- c(-10:10,1)
+x <- sample(s,size=1)
+
+if(x>0) {
+  print("positive")
+} else if (x<0){
+  print("negative")
+} else {
+  print("zero")
+}
+
+
+
+
+```
+
+
+## Question 4
+
+Extend the code to the situation where there are $k$ doors and $m<k-1$ bicycles. The game show host opens one of the doors that does not contain a car. All of those eligible doors have equal probability of being opened by the game show host. The rest of the game is the same.
+
+## Answer 4
+
+```{r}
+# Write your answer here
+```
+
+
